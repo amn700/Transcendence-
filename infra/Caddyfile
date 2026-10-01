@@ -1,0 +1,17 @@
+http://{$DOMAIN:localhost} {
+  redir https://{host}{uri} permanent
+}
+
+https://{$DOMAIN:localhost} {
+  tls internal
+
+  handle /api/* {
+    reverse_proxy backend:3000
+  }
+  handle /socket.io/* {
+    reverse_proxy backend:3000
+  }
+  handle {
+    reverse_proxy frontend:5173
+  }
+}
