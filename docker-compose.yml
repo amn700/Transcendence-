@@ -2,7 +2,7 @@ services:
   proxy:
     image: caddy:2
     ports:
-      - "80:80"
+      - "${HTTP_PORT:-8080}:80"
       - "443:443"
     environment:
       DOMAIN: ${DOMAIN:-localhost}
@@ -12,35 +12,11 @@ services:
       - caddy_config:/config
     depends_on:
       - frontend
-      - backend
   frontend:
     build: ./frontend
     volumes:
       - ./frontend:/app
       - /app/node_modules
-  backend:
-    build: ./backend
-    env_file: .env
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    image: postgres:16-alpine
-    env_file: .env
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
 volumes:
-  pgdata:
   caddy_data:
   caddy_config:

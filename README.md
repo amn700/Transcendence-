@@ -6,16 +6,28 @@
 
 Skill Swap lets people teach skills to earn credits and spend credits to learn from others.
 
-## Instructions
+## Development
 
-Prerequisites: Docker Desktop with Docker Compose. Copy the local configuration and start the development stack:
+Skill Swap is a frontend-first React application for exchanging skills. The development environment uses Vite, Docker Compose, and Caddy.
+
+Prerequisite: Docker Desktop with Docker Compose. Copy the local configuration and start the stack:
 
 ```sh
 cp .env.example .env
 docker compose up --build
 ```
 
-Open https://localhost. The health endpoint is https://localhost/api/health. Caddy uses a local development certificate, so browsers will initially show a warning. Trust its root certificate with `docker compose cp proxy:/data/caddy/pki/authorities/local/root.crt .`, then import `root.crt` into your operating system/browser trust store. Alternatively, run `mkcert -install && mkcert localhost`, mount the resulting certificate and key into the proxy container, and replace `tls internal` in the Caddyfile with `tls /certs/localhost.pem /certs/localhost-key.pem`.
+Open http://localhost:8080 for the development app. HTTPS is also available at https://localhost through Caddy's local development certificate. Set `HTTP_PORT` in `.env` to change the HTTP port.
+
+For direct frontend development, run:
+
+```sh
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend checks are available through `npm run lint` and `npm run build`.
 
 ## Resources
 
@@ -31,11 +43,7 @@ Placeholder.
 
 ## Technical Stack
 
-React, TypeScript, Vite, Tailwind CSS, NestJS, PostgreSQL 16, TypeORM, Caddy, and Docker Compose.
-
-## Database Schema
-
-Placeholder.
+React, TypeScript, Vite, Tailwind CSS, Caddy, and Docker Compose.
 
 ## Features List
 
